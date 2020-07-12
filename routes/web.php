@@ -22,3 +22,5 @@ $router->group(['prefix' => 'api/'], function ($router) {
 	$router->get('/species/{id}', 'speciesController@show');
 	$router->get('/species/pokemons/{id}', 'speciesController@pokemons');
 });
+
+$router->get('/dex/test', 'dexController@test');
