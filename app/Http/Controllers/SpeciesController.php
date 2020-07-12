@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Language;
 use App\Models\Species;
+use App\Models\SpeciesName;
 use Illuminate\Http\Request;
 
 class SpeciesController extends Controller
@@ -32,7 +33,7 @@ class SpeciesController extends Controller
         $lang = Language::where('identifier', ($request->has('lang')) ? $request->input('lang') : 'en');
         $langId = ($lang->count() == 0) ? 9 : $lang->first()->id;
 
-        $data = Species::where('id', $id)->get();
+        $data = Species::find($id);
         return response()->json($data);
     }
 
@@ -41,7 +42,9 @@ class SpeciesController extends Controller
         $lang = Language::where('identifier', ($request->has('lang')) ? $request->input('lang') : 'en');
         $langId = ($lang->count() == 0) ? 9 : $lang->first()->id;
 
-        $data = Species::find($id)->pokemons;
+        $species = Species::find($id);
+        $name = $species->name()->where('local_language_id', $langId)->first();
+        $data = $species->pokemons()->get();
         return response()->json($data);
     }
 }

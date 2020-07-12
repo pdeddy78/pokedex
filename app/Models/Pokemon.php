@@ -8,8 +8,8 @@ class Pokemon extends Model
 {
     protected $table = 'pokemon';
 
-    public function species()
+    public function name()
     {
-        return $this->hasOne('App\Models\Species', 'id', 'species_id');
+        return $this->hasMany('App\Models\SpeciesName', 'pokemon_species_id', 'species_id');
     }
 }
