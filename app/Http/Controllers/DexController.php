@@ -54,7 +54,7 @@ class DexController extends Controller
                     'height' => $row->height / 10, # meter
                     'weight' => $row->weight / 10, # kilogram
                     'base_experience' => intval($row->base_experience),
-                    'order' => $row->order
+                    'order' => intval($row->order)
                 ];
             }
         }
@@ -68,7 +68,7 @@ class DexController extends Controller
             'height' => $pokemon->height / 10, # meter
             'weight' => $pokemon->weight / 10, # kilogram
             'base_experience' => intval($pokemon->base_experience),
-            'order' => $pokemon->order,
+            'order' => intval($pokemon->order),
             'forms' => $pokemon_forms
         ];
 
