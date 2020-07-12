@@ -10,11 +10,11 @@ class Species extends Model
 
     public function pokemons()
     {
-        return $this->hasMany('App\Model\Pokemon', 'species_id', 'id');
+        return $this->hasMany('App\Models\Pokemon', 'species_id', 'id');
     }
 
     public function generation()
     {
-        return $this->hasOne('App\Model\Generation', 'id', 'generation_id');
+        return $this->hasOne('App\Models\Generation', 'id', 'generation_id');
     }
 }

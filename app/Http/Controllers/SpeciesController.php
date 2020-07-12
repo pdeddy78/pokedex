@@ -18,7 +18,7 @@ class SpeciesController extends Controller
         //
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $lang = Language::where('identifier', ($request->has('lang')) ? $request->input('lang') : 'en');
         $langId = ($lang->count() == 0) ? 9 : $lang->first()->id;
@@ -27,7 +27,7 @@ class SpeciesController extends Controller
         return response()->json($data);
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $lang = Language::where('identifier', ($request->has('lang')) ? $request->input('lang') : 'en');
         $langId = ($lang->count() == 0) ? 9 : $lang->first()->id;
@@ -36,7 +36,7 @@ class SpeciesController extends Controller
         return response()->json($data);
     }
 
-    public function pokemons($id)
+    public function pokemons(Request $request, $id)
     {
         $lang = Language::where('identifier', ($request->has('lang')) ? $request->input('lang') : 'en');
         $langId = ($lang->count() == 0) ? 9 : $lang->first()->id;

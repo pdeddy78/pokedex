@@ -10,6 +10,6 @@ class Pokemon extends Model
 
     public function species()
     {
-        return $this->hasOne('App\Model\Species', 'id', 'species_id');
+        return $this->hasOne('App\Models\Species', 'id', 'species_id');
     }
 }
