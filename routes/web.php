@@ -16,11 +16,11 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api/'], function ($router) {
-	$router->get('/dex', 'dexController@index');
-	$router->get('/dex/{id}', 'dexController@show');
-	$router->get('/species', 'speciesController@index');
-	$router->get('/species/{id}', 'speciesController@show');
-	$router->get('/species/pokemons/{id}', 'speciesController@pokemons');
+	$router->get('/dex', 'DexController@index');
+	$router->get('/dex/{id}', 'DexController@show');
+	$router->get('/species', 'SpeciesController@index');
+	$router->get('/species/{id}', 'SpeciesController@show');
+	$router->get('/species/pokemons/{id}', 'SpeciesController@pokemons');
 });
 
 $router->get('/dex/test', 'dexController@test');
