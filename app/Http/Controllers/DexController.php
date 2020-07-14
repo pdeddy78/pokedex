@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
+use App\Models\Generation;
 use App\Models\Language;
 use App\Models\Pokemon;
 use App\Models\Species;
@@ -35,22 +36,27 @@ class DexController extends Controller
         $langId = ($lang->count() == 0) ? 9 : $lang->first()->id;
 
         $pokemon = Pokemon::find($id);
-        $pokemon_name = $pokemon->name()->where('local_language_id', $langId)->first();
-        $pokemon_form_id = Form::where('pokemon_id', $id)->first();
-        $pokemon_form_name = ($pokemon_form_id == null) ? null : Form::find($pokemon_form_id->id)->name()->where('local_language_id', $langId)->first();
+        $pokemon_name = $pokemon->localPokemonName($langId)->first();
 
-        $pokemon_species = Species::find($id)->pokemons()->get();
+        $pokemon_form_id = Form::where('pokemon_id', $id)->first();
+        $pokemon_form_name = Form::find($pokemon_form_id->id)->localFormName($langId)->first();
+
+        $species = Species::find($id);
+        $sp_generation = $species->generation()->first();
+        $region_id = $sp_generation->main_region_id;
+        $generation = Generation::find($sp_generation->id)->localGenerationName($langId)->first();
+        $pokemon_species = $species->pokemons()->get();
         $pokemon_forms = [];
         if ($pokemon_species->count() > 1) {
             foreach ($pokemon_species as $row) {
                 $pokemon_species_form_id = Form::where('pokemon_id', $row->id)->first();
-                $pokemon_species_form_name = ($pokemon_species_form_id == null) ? null : Form::find($pokemon_species_form_id->id)->name()->where('local_language_id', $langId)->first();
-                
+                $pokemon_species_form_name = Form::find($pokemon_species_form_id->id)->localFormName($langId)->first();
+
                 $pokemon_forms[] = [
                     'id' => $row->id,
                     'identifier' => $row->identifier,
-                    'form_name' => ($pokemon_species_form_name == null) ? null : $pokemon_species_form_name->form_name,
-                    'name' => ($pokemon_species_form_name == null) ? null : $pokemon_species_form_name->pokemon_name,
+                    'form_type' => ($pokemon_species_form_name == null) ? null : $pokemon_species_form_name->form_name,
+                    'form_name' => ($pokemon_species_form_name == null) ? null : $pokemon_species_form_name->pokemon_name,
                     'height' => $row->height / 10, # meter
                     'weight' => $row->weight / 10, # kilogram
                     'base_experience' => intval($row->base_experience),
@@ -62,12 +68,13 @@ class DexController extends Controller
         $data = [
             'id' => $pokemon->id,
             'identifier' => $pokemon->identifier,
-            'form_name' => ($pokemon_form_name == null) ? null : $pokemon_form_name->form_name,
-            'name' => ($pokemon_name == null) ? null : $pokemon_name->name,
-            'genus' => ($pokemon_name == null) ? null : $pokemon_name->genus,
+            'form_type' => ($pokemon_form_name == null) ? null : $pokemon_form_name->form_name,
+            'name' => $pokemon_name->name,
+            'genus' => $pokemon_name->genus,
             'height' => $pokemon->height / 10, # meter
             'weight' => $pokemon->weight / 10, # kilogram
             'base_experience' => intval($pokemon->base_experience),
+            'generation' => $generation->name,
             'order' => intval($pokemon->order),
             'forms' => $pokemon_forms
         ];
@@ -77,7 +84,6 @@ class DexController extends Controller
 
     public function test()
     {
-        $locale = App::getLocale();
-        die(var_dump($locale));
+        die('diediediediediediediediediediedie');
     }
 }
